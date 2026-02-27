@@ -16,7 +16,6 @@ SuppGain’e hoş geldiniz, gelişiminizi birlikte planlayalım. 💪
 Healty-Fittness
 
 **Referans Uygulama:** 
-
 [Supplify](https://play.google.com/store/apps/details?id=co.a80bucks.supplify&hl=tr)
 ---
 
@@ -30,16 +29,10 @@ Healty-Fittness
 ## Proje Ekibi
 
 **Grup Adı:** 
-> Belirlediğiniz grup adı buraya yazılacaktır.
+ EternalLone
 
 **Ekip Üyeleri:** 
-- Ali Tutar
-- Veli Yılmaz
-- Selami Demir
-- Ayşe Kaya
-- Fatma Öztürk
-- Hayriye Şahin
-
+- İsmet Mercanlı
 ---
 
 ## Dokümantasyon
