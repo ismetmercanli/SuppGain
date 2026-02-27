@@ -17,4 +17,4 @@
 
 # Gereksinim Dağılımları
 
-1. [Ali Tutar'ın Gereksinimleri](Ali-Tutar/Ali-Tutar-Gereksinimler.md)
+1. [İsmet Mercanlı'nın Gereksinimleri](İsmet-Mercanlı/İsmet-Mercanlı-Gereksinimler.md)
