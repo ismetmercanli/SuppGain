@@ -1,8 +1,4 @@
-# PROJE ADI
-
-> **Not:** Bu bölüm proje adı ile güncellenmelidir.
-
----
+# SuppGain
 
 ## Proje Hakkında
 
