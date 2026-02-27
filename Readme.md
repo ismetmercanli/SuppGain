@@ -5,16 +5,19 @@
 ![Ürün Tanıtım Görseli](Product.png)
 
 **Proje Tanımı:** 
-> Projenin ne iş yaptığını anlatan bir paragraflık tanıtım metni buraya yazılacaktır.
 
-**Örnek:** ASY isimli e-ticaret sitemiz, online alışveriş deneyimini kolay ve keyifli hale getirmek için tasarlandı. Geniş ürün yelpazemiz sayesinde müşterilerimize en iyi seçenekleri sunarken, kullanıcı dostu arayüzümüz ile de alışveriş yapmayı daha rahat hale getiriyoruz. Sitemizde yer alan ürünler, kaliteli ve güvenilir markaların en yeni ve trend ürünlerinden oluşuyor. Müşterilerimiz, aradıkları ürünleri hızlı ve kolay bir şekilde bulabilirken, aynı zamanda satın alma süreçlerinde de sorunsuz bir deneyim yaşayacaklar. Hızlı teslimat seçenekleri, güvenli ödeme sistemleri ve müşteri memnuniyetine önem veren satış sonrası hizmetlerimizle, ASY olarak müşterilerimizin beklentilerini en üst seviyede karşılamayı hedefliyoruz. Her zaman en iyi fiyatlarla, kaliteli ürünleri müşterilerimize sunmak için çalışıyoruz ve müşteri memnuniyeti bizim için her zaman önceliklidir. ASY e-ticaret sitemize hoş geldiniz, size hizmet vermek için sabırsızlanıyoruz.
+SuppGain uygulamamız, spor yapan ve takviye ürün kullanan bireylerin kullanım sürecini düzenli, planlı ve verimli hale getirmek için tasarlandı. Kullanıcı dostu arayüzü sayesinde herkesin rahatlıkla kullanabileceği bir deneyim sunarken, kişisel hedeflere uygun planlama sistemi ile süreci daha bilinçli yönetmenizi sağlar.
+Uygulama içerisinde oluşturabileceğiniz günlük ve haftalık programlar sayesinde hangi ürünü ne zaman kullanmanız gerektiğini kolayca planlayabilirsiniz. Saat bazlı hatırlatmalar ile kullanım düzeninizi korurken, kilo ve gelişim takibi özellikleri sayesinde ilerlemenizi somut verilerle izleyebilirsiniz.
+SuppGain, yalnızca bir hatırlatma uygulaması değil; aynı zamanda performans sürecinizi analiz eden ve istatistiklerle destekleyen dijital bir asistandır. Kullanım geçmişinizi görüntüleyebilir, düzenli takibin sağladığı farkı net bir şekilde görebilirsiniz.
+Güvenli altyapısı, sade tasarımı ve kullanıcı odaklı yapısıyla SuppGain, spor sürecinizi daha disiplinli ve kontrollü bir hale getirir. Hedeflerinize ulaşırken planlı ilerlemek ve gelişiminizi profesyonel bir şekilde takip etmek için SuppGain her zaman yanınızda.
+SuppGain’e hoş geldiniz, gelişiminizi birlikte planlayalım. 💪
 
 **Proje Kategorisi:** 
-> Projenin hangi alanda yapıldığını belirten bir kategori. Örnek: E-Ticaret, Sosyal Medya vb.
+Healty-Fittness
 
 **Referans Uygulama:** 
-> [Örnek Referans Uygulama](https://example.com)
 
+[Supplify](https://play.google.com/store/apps/details?id=co.a80bucks.supplify&hl=tr)
 ---
 
 ## Proje Linkleri
