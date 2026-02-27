@@ -1,7 +1,7 @@
 # Tüm Gereksinimler
-1.Kayıt olma 
-2.Giriş yapma 
-3.Profil görüntüleme 
+1. Kayıt olma 
+2. Giriş yapma 
+3. Profil görüntüleme 
 4.Profil güncelleme 
 5.Hesap silme 
 6.Ürün listeleme 
