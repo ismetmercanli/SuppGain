@@ -1,8 +1,225 @@
 # API Tasarımı - OpenAPI Specification 
 
-OpenAPI Spesifikasyon Dosyası:[İsmet.yml](https://github.com/ismetmercanli/SuppGain/blob/main/%C4%B0smet.yml)
+**OpenAPI Spesifikasyon Dosyası:**[İsmet.yml](https://github.com/ismetmercanli/SuppGain/blob/main/%C4%B0smet.yml)
 
 Bu doküman, OpenAPI Specification (OAS) 3.0 standardına göre hazırlanmış örnek bir API tasarımını içermektedir.
 
 ## OpenAPI Specification
 
+
+openapi: 3.0.3
+info:
+  title: E-Ticaret ve Program Yönetim API'si
+  version: 1.0.0
+  description: >
+    Bu API kullanıcı yönetimi, ürün yönetimi, sepet işlemleri,
+    sipariş oluşturma ve haftalık program planlama işlemlerini
+    sağlayan RESTful bir servistir.
+
+servers:
+  - url: https://localhost:3000
+    description: Development Server
+
+tags:
+  - name: Auth
+    description: Kullanıcı kayıt ve giriş işlemleri
+  - name: Users
+    description: Kullanıcı profil işlemleri
+  - name: Products
+    description: Ürün işlemleri
+  - name: Cart
+    description: Sepet işlemleri
+  - name: Orders
+    description: Sipariş işlemleri
+  - name: WeeklyProgram
+    description: Haftalık program işlemleri
+
+paths:
+
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Kullanıcı Kayıt
+      description: Kullanıcıların email ve şifre ile sisteme yeni hesap oluşturmasını sağlar.
+      operationId: registerUser
+      responses:
+        "201":
+          description: Kullanıcı başarıyla oluşturuldu
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Kullanıcı Girişi
+      description: Kullanıcıların email ve şifre ile sisteme giriş yapmasını sağlar.
+      operationId: loginUser
+      responses:
+        "200":
+          description: Giriş başarılı
+
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - Users
+      summary: Profil Görüntüleme
+      description: Kullanıcının profil bilgilerini görüntülemesini sağlar.
+      operationId: getUser
+      responses:
+        "200":
+          description: Kullanıcı bilgileri getirildi
+
+    put:
+      tags:
+        - Users
+      summary: Profil Güncelleme
+      description: Kullanıcının ad, email veya telefon gibi bilgilerini güncellemesini sağlar.
+      operationId: updateUser
+      responses:
+        "200":
+          description: Kullanıcı güncellendi
+
+    delete:
+      tags:
+        - Users
+      summary: Hesap Silme
+      description: Kullanıcının hesabını sistemden kalıcı olarak silmesini sağlar.
+      operationId: deleteUser
+      responses:
+        "204":
+          description: Kullanıcı silindi
+
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Ürün Listeleme
+      description: Sistemde bulunan tüm ürünleri veya filtrelenmiş ürünleri listeler.
+      operationId: listProducts
+      responses:
+        "200":
+          description: Ürün listesi döndürüldü
+
+    post:
+      tags:
+        - Products
+      summary: Ürün Ekleme
+      description: Yeni bir ürünün sisteme eklenmesini sağlar.
+      operationId: addProduct
+      responses:
+        "201":
+          description: Ürün başarıyla eklendi
+
+  /products/{productId}:
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: string
+
+    put:
+      tags:
+        - Products
+      summary: Ürün Güncelleme
+      description: Mevcut bir ürünün fiyat, stok veya açıklama gibi bilgilerinin güncellenmesini sağlar.
+      operationId: updateProduct
+      responses:
+        "200":
+          description: Ürün güncellendi
+
+    delete:
+      tags:
+        - Products
+      summary: Ürün Silme
+      description: Sistemde bulunan bir ürünü kalıcı olarak siler.
+      operationId: deleteProduct
+      responses:
+        "204":
+          description: Ürün silindi
+
+  /cart:
+    post:
+      tags:
+        - Cart
+      summary: Sepete Ürün Ekleme
+      description: Kullanıcının seçtiği ürünü sepetine eklemesini sağlar.
+      operationId: addToCart
+      responses:
+        "200":
+          description: Ürün sepete eklendi
+
+    get:
+      tags:
+        - Cart
+      summary: Sepeti Görüntüleme
+      description: Kullanıcının sepetindeki ürünleri ve toplam tutarı görüntülemesini sağlar.
+      operationId: getCart
+      responses:
+        "200":
+          description: Sepet listesi döndürüldü
+
+  /orders:
+    post:
+      tags:
+        - Orders
+      summary: Sipariş Oluşturma
+      description: Sepette bulunan ürünler için yeni bir sipariş oluşturur.
+      operationId: createOrder
+      responses:
+        "201":
+          description: Sipariş oluşturuldu
+
+  /orders/{orderId}:
+    parameters:
+      - name: orderId
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - Orders
+      summary: Sipariş Görüntüleme
+      description: Kullanıcının oluşturduğu siparişin detaylarını görüntülemesini sağlar.
+      operationId: getOrder
+      responses:
+        "200":
+          description: Sipariş bilgileri getirildi
+
+  /weekly-program:
+    post:
+      tags:
+        - WeeklyProgram
+      summary: Haftalık Program Oluşturma
+      description: Kullanıcının haftalık programını günlere göre oluşturmasını sağlar.
+      operationId: createProgram
+      responses:
+        "201":
+          description: Program oluşturuldu
+
+  /weekly-program/{programId}:
+    parameters:
+      - name: programId
+        in: path
+        required: true
+        schema:
+          type: string
+
+    put:
+      tags:
+        - WeeklyProgram
+      summary: Haftalık Program Güncelleme
+      description: Kullanıcının daha önce oluşturduğu haftalık programı güncellemesini sağlar.
+      operationId: updateProgram
+      responses:
+        "200":
+          description: Program güncellendi
