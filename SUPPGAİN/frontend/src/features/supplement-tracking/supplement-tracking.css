@@ -1,0 +1,371 @@
+.st-shell {
+  padding: 24px;
+  color: #d7e8ff;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #0f223f, #071226 60%),
+    radial-gradient(circle at 90% 0%, rgba(46, 232, 183, 0.08), transparent 35%);
+}
+
+.st-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 1220px;
+  margin: 0 auto 20px;
+}
+
+.st-back {
+  background: rgba(22, 47, 77, 0.5);
+  border: 1px solid #2e6eb2;
+  color: #d7e8ff;
+  border-radius: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.st-back:hover {
+  border-color: #46e8b7;
+  color: #fff;
+}
+
+.st-title-block h1 {
+  margin: 0 0 6px;
+  font-size: 1.65rem;
+}
+
+.st-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.st-badge {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(70, 232, 183, 0.2);
+  color: #46e8b7;
+  border: 1px solid rgba(70, 232, 183, 0.45);
+}
+
+.st-date-muted {
+  color: #89a8ca;
+  font-size: 0.95rem;
+}
+
+.st-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+  max-width: 1220px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .st-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.st-card {
+  border: 1px solid #1f3d66;
+  border-radius: 14px;
+  padding: 16px;
+  background: rgba(10, 24, 43, 0.85);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+
+.st-summary {
+  margin-bottom: 16px;
+}
+
+.st-summary-text strong {
+  font-size: 2rem;
+  color: #46e8b7;
+}
+
+.st-summary-text p {
+  margin: 6px 0 0;
+  color: #9fbde0;
+  font-size: 0.92rem;
+}
+
+.st-bar-track {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(31, 61, 102, 0.8);
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.st-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2e8f6e, #46e8b7);
+  transition: width 0.25s ease;
+}
+
+.st-section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.st-section-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.st-muted {
+  color: #89a8ca;
+  font-size: 0.88rem;
+}
+
+.st-intake-list {
+  display: grid;
+  gap: 10px;
+}
+
+.st-intake-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(22, 47, 77, 0.45);
+  border: 1px solid transparent;
+}
+
+.st-intake-row.is-due {
+  border-color: rgba(70, 232, 183, 0.45);
+  background: rgba(22, 77, 62, 0.25);
+}
+
+.st-intake-row.is-done {
+  opacity: 0.92;
+}
+
+.st-intake-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(46, 110, 178, 0.35);
+  font-size: 1.1rem;
+}
+
+.st-intake-body h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.st-intake-meta {
+  color: #9fbde0;
+  font-size: 0.85rem;
+}
+
+.st-status-pill {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.st-status-pill.done {
+  background: rgba(70, 232, 183, 0.2);
+  color: #46e8b7;
+}
+
+.st-status-pill.wait {
+  background: rgba(140, 160, 190, 0.15);
+  color: #9fbde0;
+}
+
+.st-btn-consume {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #2e8f6e, #46e8b7);
+  color: #041018;
+}
+
+.st-btn-consume:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.st-stock-list {
+  display: grid;
+  gap: 12px;
+}
+
+.st-stock-item {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(22, 47, 77, 0.45);
+  border: 1px solid #2a4a73;
+}
+
+.st-stock-item.urgent {
+  border-color: rgba(255, 149, 71, 0.55);
+  background: rgba(60, 35, 18, 0.35);
+}
+
+.st-stock-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.st-stock-tag.acil {
+  background: rgba(255, 80, 80, 0.25);
+  color: #ff9a8a;
+}
+
+.st-stock-tag.uyari {
+  background: rgba(255, 180, 90, 0.2);
+  color: #ffc078;
+}
+
+.st-stock-item h3 {
+  margin: 0 0 6px;
+  font-size: 0.98rem;
+}
+
+.st-stock-servings {
+  color: #ffc078;
+  font-size: 0.88rem;
+  margin-bottom: 10px;
+}
+
+.st-btn-cta {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.st-btn-cta.primary {
+  background: linear-gradient(135deg, #e86b2a, #ff9a44);
+  color: #1a0a04;
+}
+
+.st-btn-cta.secondary {
+  background: rgba(46, 110, 178, 0.5);
+  color: #d7e8ff;
+  border: 1px solid #3d6fa3;
+}
+
+.st-empty {
+  text-align: center;
+  padding: 28px 16px;
+  color: #89a8ca;
+}
+
+.st-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, #2e8f6e, #46e8b7);
+  color: #041018;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  z-index: 20;
+}
+
+.st-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 30;
+  padding: 16px;
+}
+
+.st-modal {
+  width: min(440px, 100%);
+  border-radius: 14px;
+  padding: 20px;
+  background: #0f1f36;
+  border: 1px solid #2a4a73;
+  color: #d7e8ff;
+}
+
+.st-modal h2 {
+  margin: 0 0 14px;
+}
+
+.st-form-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.st-form-grid label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #9fbde0;
+}
+
+.st-form-grid input,
+.st-form-grid select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #2e6eb2;
+  background: rgba(10, 24, 43, 0.9);
+  color: #fff;
+}
+
+.st-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.st-modal-actions button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #2e6eb2;
+  background: transparent;
+  color: #d7e8ff;
+  cursor: pointer;
+}
+
+.st-modal-actions button.primary {
+  background: #46e8b7;
+  color: #041018;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.st-error {
+  color: #ff9a8a;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}

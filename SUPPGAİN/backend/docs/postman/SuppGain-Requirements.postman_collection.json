@@ -1,0 +1,665 @@
+{
+  "info": {
+    "name": "SuppGain - 15 Requirement APIs (Step by Step)",
+    "_postman_id": "3c6df7bf-1328-4af0-b8c0-22f1a222d6d0",
+    "description": "Sadece istenen 15 gereksinim icin. Request isimleri sirali oldugu icin tek tek manuel calistirmaya uygundur. Bazi requestler onceki adimlarda set edilen collection variable'lari kullanir (token, productId, orderId, programId).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Kayit Olma (POST /auth/register)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200, 400, 409, 422]).to.include(pm.response.code);",
+              "});",
+              "if (pm.response.code === 200) {",
+              "  const data = pm.response.json();",
+              "  if (data.token) pm.collectionVariables.set('token', data.token);",
+              "  if (data.user && data.user.id) pm.collectionVariables.set('userId', data.user.id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"{{firstName}}\",\n  \"lastName\": \"{{lastName}}\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"phone\": \"5551112233\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      }
+    },
+    {
+      "name": "02 - Giris Yapma (POST /auth/login)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200, 400, 401, 422]).to.include(pm.response.code);",
+              "});",
+              "if (pm.response.code === 200) {",
+              "  const data = pm.response.json();",
+              "  if (data.token) pm.collectionVariables.set('token', data.token);",
+              "  if (data.user && data.user.id) pm.collectionVariables.set('userId', data.user.id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      }
+    },
+    {
+      "name": "03 - Profil Goruntuleme (GET /users/me)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200, 401, 404]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      }
+    },
+    {
+      "name": "04 - Profil Guncelleme (PUT /users/me)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200, 400, 401, 404, 409, 422]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"{{firstName}}\",\n  \"lastName\": \"{{lastName}}\",\n  \"email\": \"{{email}}\",\n  \"phone\": \"5553334455\",\n  \"age\": 25,\n  \"gender\": \"Erkek\",\n  \"heightCm\": 178,\n  \"weightKg\": 81\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      }
+    },
+    {
+      "name": "06 - Urun Listeleme (GET /products)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200]).to.include(pm.response.code);",
+              "});",
+              "if (pm.response.code === 200) {",
+              "  const data = pm.response.json();",
+              "  if (Array.isArray(data) && data.length > 0 && data[0].id) {",
+              "    pm.collectionVariables.set('cartProductId', data[0].id);",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/products?isActive=true",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "isActive",
+              "value": "true"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "07 - Urun Ekleme (POST /products)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([201, 400, 401, 409, 422]).to.include(pm.response.code);",
+              "});",
+              "if (pm.response.code === 201) {",
+              "  const data = pm.response.json();",
+              "  if (data.id) {",
+              "    pm.collectionVariables.set('productId', data.id);",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Demo Whey {{timestamp}}\",\n  \"description\": \"Collection ile uretilen urun.\",\n  \"imageUrl\": \"https://images.unsplash.com/photo-1579722820308-d74e571900a9?auto=format&fit=crop&w=800&q=80\",\n  \"price\": 799.90,\n  \"stock\": 30,\n  \"category\": \"Protein\",\n  \"isActive\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ]
+        }
+      }
+    },
+    {
+      "name": "08 - Urun Guncelleme (PUT /products/{id})",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200, 400, 401, 404, 409, 422]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Demo Whey Updated\",\n  \"description\": \"Guncellenmis urun aciklamasi.\",\n  \"imageUrl\": \"https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&w=800&q=80\",\n  \"price\": 899.90,\n  \"stock\": 24,\n  \"category\": \"Protein\",\n  \"isActive\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products/{{productId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products",
+            "{{productId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "10 - Sepete Urun Ekleme (POST /cart)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200, 400, 401, 404, 422]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productId\": \"{{cartProductId}}\",\n  \"quantity\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/cart",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cart"
+          ]
+        }
+      }
+    },
+    {
+      "name": "11 - Sepet Goruntuleme (GET /cart)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200, 401, 404]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/cart",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cart"
+          ]
+        }
+      }
+    },
+    {
+      "name": "12 - Siparis Olusturma (POST /orders)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([201, 400, 401]).to.include(pm.response.code);",
+              "});",
+              "if (pm.response.code === 201) {",
+              "  const data = pm.response.json();",
+              "  if (data.orderId) pm.collectionVariables.set('orderId', data.orderId);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "orders"
+          ]
+        }
+      }
+    },
+    {
+      "name": "13 - Siparis Goruntuleme (GET /orders/{id})",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200, 401, 403, 404]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{orderId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "orders",
+            "{{orderId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "14 - Haftalik Program Olusturma (POST /weekly-program)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([201, 400, 401, 404, 422]).to.include(pm.response.code);",
+              "});",
+              "if (pm.response.code === 201) {",
+              "  const data = pm.response.json();",
+              "  if (data.programId) pm.collectionVariables.set('programId', data.programId);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Haftalik Program - API Collection\",\n  \"contentJson\": \"{\\\"source\\\":\\\"manual\\\",\\\"schedule\\\":[{\\\"day\\\":\\\"Pazartesi\\\",\\\"slot\\\":\\\"Sabah\\\",\\\"productId\\\":\\\"{{cartProductId}}\\\",\\\"productName\\\":\\\"Demo\\\",\\\"category\\\":\\\"Protein\\\",\\\"dosage\\\":\\\"1 doz\\\",\\\"note\\\":\\\"Kahvalti ile\\\"}]}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/weekly-program",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "weekly-program"
+          ]
+        }
+      }
+    },
+    {
+      "name": "15 - Haftalik Program Guncelleme (PUT /weekly-program/{id})",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([200, 400, 401, 403, 404, 422]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Haftalik Program - Guncel\",\n  \"contentJson\": \"{\\\"source\\\":\\\"manual-updated\\\",\\\"schedule\\\":[{\\\"day\\\":\\\"Sali\\\",\\\"slot\\\":\\\"Ogle\\\",\\\"productId\\\":\\\"{{cartProductId}}\\\",\\\"productName\\\":\\\"Demo\\\",\\\"category\\\":\\\"Protein\\\",\\\"dosage\\\":\\\"1 doz\\\",\\\"note\\\":\\\"Antrenman oncesi\\\"}]}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/weekly-program/{{programId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "weekly-program",
+            "{{programId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "05 - Hesap Silme (DELETE /users/me)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([204, 401, 403, 404]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "me"
+          ]
+        }
+      }
+    },
+    {
+      "name": "09 - Urun Silme (DELETE /products/{id})",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status valid', function () {",
+              "  pm.expect([204, 401, 404]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/products/{{productId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products",
+            "{{productId}}"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5260"
+    },
+    {
+      "key": "firstName",
+      "value": "Api"
+    },
+    {
+      "key": "lastName",
+      "value": "Tester"
+    },
+    {
+      "key": "email",
+      "value": "apitester@suppgain.local"
+    },
+    {
+      "key": "password",
+      "value": "Admin123!"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "productId",
+      "value": ""
+    },
+    {
+      "key": "cartProductId",
+      "value": "a01722cd-cc19-471f-86aa-8146a7a4fa76"
+    },
+    {
+      "key": "orderId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "programId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "timestamp",
+      "value": "20260404"
+    }
+  ]
+}

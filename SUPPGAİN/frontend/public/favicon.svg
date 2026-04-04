@@ -1,0 +1,21 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="SuppGain Favicon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a1528" />
+      <stop offset="100%" stop-color="#071021" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#46e8b7" />
+      <stop offset="100%" stop-color="#2f87ff" />
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="url(#bg)" />
+
+  <!-- Capsule frame -->
+  <rect x="11" y="13" width="42" height="38" rx="19" fill="none" stroke="url(#accent)" stroke-width="4" />
+  <path d="M32 13v38" stroke="url(#accent)" stroke-width="3" opacity="0.85" />
+
+  <!-- Tracking check mark -->
+  <path d="M20 33l7 7 17-17" fill="none" stroke="#46e8b7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

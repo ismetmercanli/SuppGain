@@ -1,0 +1,28 @@
+# Build outputs
+**/bin/
+**/obj/
+**/dist/
+**/build/
+
+# Node
+**/node_modules/
+frontend/.vite/
+frontend/.turbo/
+
+# IDE
+.vs/
+.vscode/
+
+# Test artifacts
+TestResults/
+**/coverage/
+
+# Local/sensitive
+*.user
+*.suo
+*.db
+*.log
+*.nupkg
+.env
+*.env.local
+*.env.production.local

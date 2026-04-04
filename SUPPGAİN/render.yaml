@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: suppgain-api
+    runtime: dotnet
+    rootDir: backend/src/SuppGain.Api
+    buildCommand: dotnet restore && dotnet publish -c Release -o ./publish
+    startCommand: dotnet ./publish/SuppGain.Api.dll
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:10000
+      - key: Swagger__Enabled
+        value: "true"
+      - key: Cors__AllowedOrigins__0
+        value: https://YOUR-FRONTEND-PROJECT.vercel.app
+      - key: Jwt__Issuer
+        sync: false
+      - key: Jwt__Audience
+        sync: false
+      - key: Jwt__Key
+        sync: false
+      - key: Jwt__ExpiryMinutes
+        value: "120"
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
