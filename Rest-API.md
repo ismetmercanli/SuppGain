@@ -44,7 +44,7 @@ Response: `200 OK`
   "password": "Test123!"
 }
 ```
-Response: `200 OK`
+- Response: `200 OK`
 ```json
 {
   "token": "<jwt-token>",
@@ -55,5 +55,61 @@ Response: `200 OK`
   }
 }
 ```
+## 3. Profil Görüntüleme
+- **Endpoint:** `GET /users/me`
+- **Description:** Giriş yapan kullanıcının profilini getirir.
+- **Request Body:**
+```json
+{}
+```
+- Response: `200 OK`
+```json
+{
+  "id": "GUID",
+  "firstName": "Ismet",
+  "lastName": "Mercanli",
+  "email": "kullanici@gmail.com",
+  "role": "User"
+}
+```
+## 4. Profil Güncelleme
+- **Endpoint:** `PUT /users/me`
+- **Description:** Giriş yapan kullanıcının profil bilgilerini günceller.
+- **Request Body:**
+```json
+{
+  "firstName": "Ismet",
+  "lastName": "Mercanli",
+  "phone": "5559998877"
+}
+```
+- Response: `200 OK`
+```json
+{
+  "id": "GUID",
+  "firstName": "Ismet",
+  "lastName": "Mercanli",
+  "email": "kullanici@gmail.com",
+  "phone": "5559998877",
+  "role": "User"
+}
+```
+## 5. Hesap Silme
+- **Endpoint:** `DELETE /users/me`
+- **Description:** Giriş yapan kullanıcının hesabını siler/deaktif eder.
+- **Request Body:**
+```json
+{}
+```
+- Response: `200 OK`
+
+```json
+{
+  "message": "Hesap silindi."
+}
+```
+
+
+
 
 
