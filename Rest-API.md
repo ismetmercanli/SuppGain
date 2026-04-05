@@ -20,8 +20,9 @@ Bu dokümanda, proje ekibindeki her üyenin geliştirmekten sorumlu olduğu REST
   "password": "Test123!",
   "phone": "5551112233"
 }
-Response: 200 OK
-
+```
+Response: `200 OK`
+```
 {
   "token": "<jwt-token>",
   "user": {
@@ -42,7 +43,9 @@ Response: 200 OK
   "email": "kullanici@gmail.com",
   "password": "Test123!"
 }
-Response: 200 OK
+```
+Response: `200 OK`
+```json
 {
   "token": "<jwt-token>",
   "user": {
@@ -51,5 +54,6 @@ Response: 200 OK
     "role": "User"
   }
 }
+```
 
 
