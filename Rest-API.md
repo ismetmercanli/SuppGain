@@ -1,6 +1,6 @@
 # REST API Görev Dağılımı
 
-**REST API Adresi:** [api.suppgain.com](https://ismetmercanli-suppgainfrontend.vercel.app/)
+**REST API Adresi:** [api.suppgain.com](https://suppgain-production.up.railway.app/swagger/index.html)
 
 Bu dokümanda, proje ekibindeki her üyenin geliştirmekten sorumlu olduğu REST API metotları listelenmektedir.
 
