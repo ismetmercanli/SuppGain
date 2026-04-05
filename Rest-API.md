@@ -1,7 +1,7 @@
 # REST API Görev Dağılımı
 
 **REST API Adresi:** [api.suppgain.com](https://suppgain-production.up.railway.app/swagger/index.html)
-**API Test Videosu:** [Youtube Api test videosu]()
+**API Test Videosu:** [Youtube Api test videosu](https://youtu.be/4tFNi7hbN_M)
 
 Bu dokümanda, proje ekibindeki her üyenin geliştirmekten sorumlu olduğu REST API metotları listelenmektedir.
 
