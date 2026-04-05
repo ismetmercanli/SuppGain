@@ -181,15 +181,17 @@ Response: `200 OK`
 - **Endpoint:** `DELETE /products/{productId}`
 - **Description:** Admin ürünü siler/pasif yapar.
 - **Request Body:**
-```json
+```
 {}
 ```
+```json
 - Response: `200 OK`
 ```
+```json
 {
   "message": "Ürün silindi."
 }
-````
+```
 ## 10. Sepete Ürün Ekleme
 - **Endpoint:** `POST /cart`
 - **Description:** Kullanıcının sepetine ürün ekler.
@@ -201,7 +203,7 @@ Response: `200 OK`
 }
 ```
 - Response: `200 OK`
-```
+```json
 {
   "id": "GUID",
   "items": [
@@ -216,11 +218,11 @@ Response: `200 OK`
 - **Endpoint:** `GET /cart`
 - **Description:** Kullanıcının aktif sepetini getirir.
 - **Request Body:**
-```
+```json
 {}
 ```
 - Response: `200 OK`
-```
+```json
 {
   "id": "GUID",
   "items": [
@@ -238,11 +240,11 @@ Response: `200 OK`
 - **Endpoint:** `POST /orders`
 - **Description:** Aktif sepetten sipariş oluşturur.
 - **Request Body:**
-```
+```json
 {}
 ```
 - Response: `200 OK`
-```
+```json
 {
   "orderId": "GUID",
   "status": "Created",
@@ -253,11 +255,11 @@ Response: `200 OK`
 - **Endpoint:** `GET /orders/{orderId}`
 - **Description:** Sipariş detayını getirir.
 - **Request Body:**
-```
+```json
 {}
 ```
 - Response: `200 OK`
-```
+```json
 {
   "id": "GUID",
   "status": "Created",
@@ -276,7 +278,7 @@ Response: `200 OK`
 - **Endpoint:** `POST /weekly-program`
 - **Description:** Kullanıcı için haftalık program oluşturur.
 - **Request Body:**
-```
+```json
 {
   "goal": "Kas kazanımı",
   "notes": "Pazartesi-Çarşamba-Cuma antrenman"
@@ -294,14 +296,14 @@ Response: `200 OK`
 - **Endpoint:** `PUT /weekly-program/{programId}`
 - **Description:** Var olan haftalık programı günceller.
 - **Request Body:**
-```
+```json
 {
   "goal": "Yağ yakımı",
   "notes": "Haftada 4 gün cardio + kuvvet"
 }
 ```
 - Response: `200 OK`
-```
+```json
 {
   "id": "GUID",
   "goal": "Yağ yakımı",
