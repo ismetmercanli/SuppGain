@@ -214,6 +214,36 @@ Swagger URL after deploy:
 
 `frontend/vercel.json` is included for SPA rewrite support.
 
+### 4) Move Docker DB to Production PostgreSQL
+
+When your local data in Docker is ready, export it and restore to your cloud PostgreSQL service:
+
+1. Export from local Docker PostgreSQL:
+
+```powershell
+cd .\SUPPGAIN
+.\scripts\export-docker-db.ps1 -ContainerName suppgain-postgres -DatabaseName suppgain -DbUser postgres -OutputFile .\suppgain_prod_seed.sql
+```
+
+2. Restore to cloud PostgreSQL (Railway/Render/Neon/Supabase):
+
+```powershell
+.\scripts\restore-dump-to-cloud.ps1 `
+  -DumpFile .\suppgain_prod_seed.sql `
+  -CloudHost "<CLOUD_HOST>" `
+  -CloudPort 5432 `
+  -CloudDatabase "<CLOUD_DB>" `
+  -CloudUser "<CLOUD_USER>" `
+  -CloudPassword "<CLOUD_PASSWORD>" `
+  -SslMode require
+```
+
+3. Point backend to cloud DB connection string:
+
+```env
+ConnectionStrings__DefaultConnection=Host=<CLOUD_HOST>;Port=<CLOUD_PORT>;Database=<CLOUD_DB>;Username=<CLOUD_USER>;Password=<CLOUD_PASSWORD>;SSL Mode=Require;Trust Server Certificate=true
+```
+
 ## Useful Docker Commands
 
 ```bash

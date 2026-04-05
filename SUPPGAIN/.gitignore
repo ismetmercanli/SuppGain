@@ -26,3 +26,11 @@ TestResults/
 .env
 *.env.local
 *.env.production.local
+
+# Local database dump files
+*.sql
+*.dump
+db-backup-*.sql
+
+# Local publish output
+backend/src/SuppGain.Api/publish-check/
