@@ -1,16 +1,9 @@
 # REST API Görev Dağılımı
 
-**REST API Adresi:** [api.yazmuh.com](https://api.yazmuh.com)
+**REST API Adresi:** [api.suppgain.com](https://ismetmercanli-suppgainfrontend.vercel.app/)
 
 Bu dokümanda, proje ekibindeki her üyenin geliştirmekten sorumlu olduğu REST API metotları listelenmektedir.
 
 ---
 
-## Grup Üyelerinin REST API Metotları
-
-1. [Ali Tutar'ın REST API Metotları](Ali-Tutar/Ali-Tutar-Rest-API-Gorevleri.md)
-2. [Grup Üyesi 2'nin REST API Metotları](Grup-Uyesi-2/Grup-Uyesi-2-Rest-API-Gorevleri.md)
-3. [Grup Üyesi 3'ün REST API Metotları](Grup-Uyesi-3/Grup-Uyesi-3-Rest-API-Gorevleri.md)
-4. [Grup Üyesi 4'ün REST API Metotları](Grup-Uyesi-4/Grup-Uyesi-4-Rest-API-Gorevleri.md)
-5. [Grup Üyesi 5'in REST API Metotları](Grup-Uyesi-5/Grup-Uyesi-5-Rest-API-Gorevleri.md)
-6. [Grup Üyesi 6'nın REST API Metotları](Grup-Uyesi-6/Grup-Uyesi-6-Rest-API-Gorevleri.md)
+## SuppGain REST API Metotları<br>**1) Kayıt Olma** — Endpoint: `POST /auth/register` | Açıklama: Yeni kullanıcı hesabı oluşturur.<br>**2) Giriş Yapma** — Endpoint: `POST /auth/login` | Açıklama: Kullanıcı giriş yapar ve JWT token döner.<br>**3) Profil Görüntüleme** — Endpoint: `GET /users/me` | Açıklama: Giriş yapan kullanıcının profilini getirir (Bearer Token).<br>**4) Profil Güncelleme** — Endpoint: `PUT /users/me` | Açıklama: Kullanıcının profil bilgilerini günceller (Bearer Token).<br>**5) Hesap Silme** — Endpoint: `DELETE /users/me` | Açıklama: Kullanıcı hesabını siler/deaktif eder (Bearer Token).<br>**6) Ürün Listeleme** — Endpoint: `GET /products` | Açıklama: Ürünleri listeler.<br>**7) Ürün Ekleme (Admin)** — Endpoint: `POST /products` | Açıklama: Admin yeni ürün ekler (Bearer Token + Admin).<br>**8) Ürün Güncelleme (Admin)** — Endpoint: `PUT /products/{productId}` | Açıklama: Admin ürün bilgilerini günceller.<br>**9) Ürün Silme (Admin)** — Endpoint: `DELETE /products/{productId}` | Açıklama: Admin ürün siler.<br>**10) Sepete Ürün Ekleme** — Endpoint: `POST /cart` | Açıklama: Kullanıcının aktif sepetine ürün ekler (Bearer Token).<br>**11) Sepet Görüntüleme** — Endpoint: `GET /cart` | Açıklama: Kullanıcının aktif sepetini getirir (Bearer Token).<br>**12) Sipariş Oluşturma** — Endpoint: `POST /orders` | Açıklama: Aktif sepetten sipariş oluşturur (Bearer Token).<br>**13) Sipariş Görüntüleme** — Endpoint: `GET /orders/{orderId}` (opsiyonel: `GET /orders/me`) | Açıklama: Sipariş detayını/listesini getirir (Bearer Token).<br>**14) Haftalık Program Oluşturma** — Endpoint: `POST /weekly-program` | Açıklama: Kullanıcıya haftalık program oluşturur (Bearer Token).<br>**15) Haftalık Program Güncelleme** — Endpoint: `PUT /weekly-program/{programId}` | Açıklama: Var olan haftalık programı günceller (Bearer Token).<br><br>**Canlı Linkler:** Swagger: `https://suppgain-production.up.railway.app/swagger` | Health: `https://suppgain-production.up.railway.app/health` | Frontend: `https://ismetmercanli-suppgainfrontend.vercel.app`
