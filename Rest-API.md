@@ -20,3 +20,18 @@ Bu dokümanda, proje ekibindeki her üyenin geliştirmekten sorumlu olduğu REST
   "password": "Test123!",
   "phone": "5551112233"
 }
+Response: 200 OK
+
+{
+  "token": "<jwt-token>",
+  "user": {
+    "id": "GUID",
+    "email": "kullanici@gmail.com",
+    "role": "User"
+  }
+}
+
+2. Giriş Yapma
+Endpoint: POST /auth/login
+Description: Kullanıcı giriş yapar ve JWT döner.
+Request Body:
