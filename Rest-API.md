@@ -34,9 +34,9 @@ Response: `200 OK`
 ```
 
 ##2. Giriş Yapma
-**Endpoint:** `POST /auth/login`
-**Description:** Kullanıcı giriş yapar ve JWT döner.
-**Request Body:**
+-**Endpoint:** `POST /auth/login`
+-**Description:** Kullanıcı giriş yapar ve JWT döner.
+-**Request Body:**
 
 ```json
 {
