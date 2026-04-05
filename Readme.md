@@ -21,8 +21,8 @@ Healty-Fittness
 
 ## Proje Linkleri
 
-- **REST API Adresi:** [api.yazmuh.com](https://api.yazmuh.com)
-- **Web Frontend Adresi:** [frontend.yazmuh.com](https://frontend.yazmuh.com)
+- **REST API Adresi:** [Api.suppgain.com](https://suppgain-production.up.railway.app/swagger/index.html)
+- **Web Frontend Adresi:** [frontend.suppgain.com](https://ismetmercanli-suppgainfrontend.vercel.app/)
 
 ---
 
