@@ -1,7 +1,7 @@
 # Web Frontend Görev Dağılımı
 
 **Web Frontend Adresi:** [frontend.suppgain.com](https://ismetmercanli-suppgainfrontend.vercel.app/)
-**Web Frontend Vİdeosu:** [Frontend test videosu]()
+**Web Frontend Vİdeosu:** [Frontend test videosu](https://youtu.be/hBCFtEaj3II)
 
 Bu dokümanda, web uygulamasının kullanıcı arayüzü (UI) ve kullanıcı deneyimi (UX) görevleri listelenmektedir. Her grup üyesi, kendisine atanan sayfaların tasarımı, implementasyonu ve kullanıcı etkileşimlerinden sorumludur.
 
