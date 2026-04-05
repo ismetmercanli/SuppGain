@@ -30,8 +30,26 @@ Response: 200 OK
     "role": "User"
   }
 }
+```
 
-2. Giriş Yapma
-Endpoint: POST /auth/login
-Description: Kullanıcı giriş yapar ve JWT döner.
-Request Body:
+##2. Giriş Yapma
+**Endpoint:** `POST /auth/login`
+**Description:** Kullanıcı giriş yapar ve JWT döner.
+**Request Body:**
+
+```json
+{
+  "email": "kullanici@gmail.com",
+  "password": "Test123!"
+}
+Response: 200 OK
+{
+  "token": "<jwt-token>",
+  "user": {
+    "id": "GUID",
+    "email": "kullanici@gmail.com",
+    "role": "User"
+  }
+}
+
+
