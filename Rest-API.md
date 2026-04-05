@@ -22,7 +22,7 @@ Bu dokümanda, proje ekibindeki her üyenin geliştirmekten sorumlu olduğu REST
 }
 ```
 Response: `200 OK`
-```
+```json
 {
   "token": "<jwt-token>",
   "user": {
@@ -184,7 +184,7 @@ Response: `200 OK`
 ```
 {}
 ```
-```json
+```
 - Response: `200 OK`
 ```
 ```json
