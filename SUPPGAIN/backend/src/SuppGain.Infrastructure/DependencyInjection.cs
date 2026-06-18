@@ -13,6 +13,8 @@ using SuppGain.Application.Features.SupplementInfos.Services;
 using SuppGain.Application.Features.SupplementTracking.Services;
 using SuppGain.Application.Features.Users.Services;
 using SuppGain.Application.Features.WeeklyPrograms.Services;
+using SuppGain.Infrastructure.Caching;
+using SuppGain.Infrastructure.Messaging;
 using SuppGain.Infrastructure.Persistence;
 using SuppGain.Infrastructure.Security;
 using SuppGain.Infrastructure.Services;
@@ -29,7 +31,11 @@ public static class DependencyInjection
 
         services.Configure<SmtpOptions>(configuration.GetSection(SmtpOptions.SectionName));
         services.Configure<AppOptions>(configuration.GetSection(AppOptions.SectionName));
+        services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
+        services.Configure<RedisOptions>(configuration.GetSection(RedisOptions.SectionName));
         services.AddScoped<IEmailSender, SmtpEmailSender>();
+        services.AddScoped<IOrderEventPublisher, RabbitMqOrderEventPublisher>();
+        services.AddScoped<IProductCache, RedisProductCache>();
 
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(connectionString));

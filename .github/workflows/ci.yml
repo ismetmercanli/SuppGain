@@ -1,0 +1,57 @@
+name: SuppGain CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend:
+    name: Backend build and tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: SUPPGAIN/backend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Restore backend
+        run: dotnet restore SuppGain.sln
+
+      - name: Build backend
+        run: dotnet build SuppGain.sln --configuration Release --no-restore
+
+      - name: Test backend
+        run: dotnet test SuppGain.sln --configuration Release --no-build
+
+  frontend:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: SUPPGAIN/frontend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: SUPPGAIN/frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build

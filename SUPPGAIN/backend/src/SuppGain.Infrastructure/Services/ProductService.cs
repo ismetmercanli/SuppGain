@@ -10,14 +10,22 @@ namespace SuppGain.Infrastructure.Services;
 public class ProductService : IProductService
 {
     private readonly IApplicationDbContext _dbContext;
+    private readonly IProductCache _productCache;
 
-    public ProductService(IApplicationDbContext dbContext)
+    public ProductService(IApplicationDbContext dbContext, IProductCache productCache)
     {
         _dbContext = dbContext;
+        _productCache = productCache;
     }
 
     public async Task<IReadOnlyList<ProductResponse>> GetListAsync(ProductListQuery query, CancellationToken cancellationToken)
     {
+        var cached = await _productCache.GetProductsAsync(query, cancellationToken);
+        if (cached is not null)
+        {
+            return cached;
+        }
+
         var products = _dbContext.Products.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(query.Name))
@@ -51,6 +59,8 @@ public class ProductService : IProductService
             .OrderBy(x => x.Name)
             .Select(x => Map(x))
             .ToListAsync(cancellationToken);
+
+        await _productCache.SetProductsAsync(query, list, cancellationToken);
 
         return list;
     }
@@ -96,6 +106,7 @@ public class ProductService : IProductService
 
         _dbContext.Products.Add(product);
         await _dbContext.SaveChangesAsync(cancellationToken);
+        await _productCache.InvalidateProductsAsync(cancellationToken);
 
         return OperationResult<ProductResponse>.Success(Map(product));
     }
@@ -138,6 +149,7 @@ public class ProductService : IProductService
         product.UpdatedAtUtc = DateTime.UtcNow;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+        await _productCache.InvalidateProductsAsync(cancellationToken);
 
         return OperationResult<ProductResponse>.Success(Map(product));
     }
@@ -155,6 +167,7 @@ public class ProductService : IProductService
 
         _dbContext.Products.Remove(product);
         await _dbContext.SaveChangesAsync(cancellationToken);
+        await _productCache.InvalidateProductsAsync(cancellationToken);
 
         return OperationResult<bool>.Success(true);
     }

@@ -52,6 +52,40 @@ ORDER BY "CreatedAtUtc" DESC
 LIMIT 20;
 ```
 
+## RabbitMQ Order Event
+
+RabbitMQ is used for the order creation requirement. After `POST /orders` creates an order, the backend publishes an `OrderCreated` message to the `suppgain.order.created` queue.
+
+Run RabbitMQ with Docker:
+
+```bash
+docker compose up -d rabbitmq
+```
+
+RabbitMQ Management UI:
+
+- URL: `http://localhost:15672`
+- Username: `guest`
+- Password: `guest`
+- Queue: `suppgain.order.created`
+
+## Redis Product Cache
+
+Redis is used for the product listing requirement. `GET /products` first checks Redis cache, then falls back to PostgreSQL. Product create/update/delete operations invalidate the product list cache.
+
+Run Redis with Docker:
+
+```bash
+docker compose up -d redis
+```
+
+Redis details:
+
+- Container: `suppgain-redis`
+- Port: `6379`
+- Cache key prefix: `suppgain:products:list`
+- Default TTL: `300` seconds
+
 ## Database Migration
 
 Run these from solution root:

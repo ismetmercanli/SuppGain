@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SuppGain.Application.Common.Interfaces;
 using SuppGain.Application.Common.Models;
 using SuppGain.Application.Features.Orders.Models;
 using SuppGain.Application.Features.Orders.Services;
@@ -11,10 +12,12 @@ namespace SuppGain.Infrastructure.Services;
 public class OrderService : IOrderService
 {
     private readonly AppDbContext _dbContext;
+    private readonly IOrderEventPublisher _orderEventPublisher;
 
-    public OrderService(AppDbContext dbContext)
+    public OrderService(AppDbContext dbContext, IOrderEventPublisher orderEventPublisher)
     {
         _dbContext = dbContext;
+        _orderEventPublisher = orderEventPublisher;
     }
 
     public async Task<OperationResult<OrderResponse>> CreateAsync(Guid userId, CancellationToken cancellationToken)
@@ -72,6 +75,16 @@ public class OrderService : IOrderService
         _dbContext.Orders.Add(order);
         await _dbContext.SaveChangesAsync(cancellationToken);
         await tx.CommitAsync(cancellationToken);
+
+        await _orderEventPublisher.PublishOrderCreatedAsync(
+            new OrderCreatedEvent
+            {
+                OrderId = order.Id,
+                UserId = order.UserId,
+                TotalAmount = order.TotalAmount,
+                CreatedAtUtc = order.CreatedAtUtc
+            },
+            cancellationToken);
 
         return OperationResult<OrderResponse>.Success(Map(order));
     }
