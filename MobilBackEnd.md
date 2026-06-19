@@ -1,54 +1,107 @@
-# Mobil Backend (REST API Bağlantısı) Görev Dağılımı
+# Mobil Backend (REST API Bağlantısı)
 
 **REST API Adresi:** [api.yazmuh.com](https://api.yazmuh.com)
-
-Bu dokümanda, mobil uygulamanın REST API ile iletişimini sağlayan backend entegrasyon görevleri listelenmektedir. Her grup üyesi, kendisine atanan API endpoint'lerinin mobil uygulamadan çağrılması ve yönetilmesinden sorumludur.
-
----
 
 ## Grup Üyelerinin Mobil Backend Görevleri
 
 1. [Ali Tutar'ın Mobil Backend Görevleri](Ali-Tutar/Ali-Tutar-Mobil-Backend-Gorevleri.md)
-2. [Grup Üyesi 2'nin Mobil Backend Görevleri](Grup-Uyesi-2/Grup-Uyesi-2-Mobil-Backend-Gorevleri.md)
-3. [Grup Üyesi 3'ün Mobil Backend Görevleri](Grup-Uyesi-3/Grup-Uyesi-3-Mobil-Backend-Gorevleri.md)
-4. [Grup Üyesi 4'ün Mobil Backend Görevleri](Grup-Uyesi-4/Grup-Uyesi-4-Mobil-Backend-Gorevleri.md)
-5. [Grup Üyesi 5'in Mobil Backend Görevleri](Grup-Uyesi-5/Grup-Uyesi-5-Mobil-Backend-Gorevleri.md)
-6. [Grup Üyesi 6'nın Mobil Backend Görevleri](Grup-Uyesi-6/Grup-Uyesi-6-Mobil-Backend-Gorevleri.md)
 
 ---
 
-## Genel Mobil Backend Prensipleri
+## Backend Entegrasyonu
 
-### 1. HTTP Client Yapılandırması
-- **Base URL:** `https://api.yazmuh.com/v1`
-- **Timeout:** Request timeout 30 saniye, connect timeout 10 saniye
-- **Headers:** 
-  - `Content-Type: application/json`
-  - `Authorization: Bearer {token}` (gerekli endpoint'lerde)
+Mobil uygulama, mevcut SuppGain backend sistemi ile haberleşmektedir.
 
-### 2. Authentication Yönetimi
-- JWT token'ları secure storage'da saklama
-- Token refresh mekanizması implementasyonu
-- Otomatik token yenileme (401 durumunda)
-- Logout durumunda token temizleme
+Canlı backend adresi:
 
-### 3. Error Handling
-- Network hataları (timeout, connection error)
-- HTTP status kodlarına göre uygun mesajlar gösterme
-- Retry mekanizması (network hatalarında)
-- Offline durum yönetimi
+```text
+https://suppgain-production.up.railway.app
+```
 
-### 4. Caching Stratejisi
-- GET istekleri için response caching
-- Cache invalidation (PUT/DELETE sonrası)
-- Offline-first yaklaşımı (mümkün olduğunda)
+API bağlantıları ortak bir Axios client yapısı üzerinden yönetilmektedir.
 
-### 5. Loading States
-- Request başlangıcında loading indicator
-- Başarılı/başarısız durum bildirimleri
-- Optimistic updates (kullanıcı deneyimi için)
+Temel yapı:
 
-### 6. Logging ve Debugging
-- API request/response logging (development modunda)
-- Error logging ve crash reporting
-- Network interceptor kullanımı
+* JSON veri gönderimi
+* JWT tabanlı kimlik doğrulama
+* Token gereken işlemlerde Authorization header kullanımı
+* Timeout ve hata yönetimi
+
+---
+
+## Kimlik Doğrulama Sistemi
+
+Sistemde kullanıcı kayıt ve giriş işlemleri bulunmaktadır.
+
+Kullanılan işlemler:
+
+* Kullanıcı kayıt
+* Kullanıcı giriş
+* Profil görüntüleme
+* Profil güncelleme
+* Hesap silme
+
+Giriş sonrası alınan JWT token mobil cihazda güvenli şekilde saklanmaktadır.
+
+---
+
+## Uygulama Modülleri
+
+Mobil uygulama içerisinde temel olarak şu modüller bulunmaktadır:
+
+* Ürün listeleme
+* Ürün detay görüntüleme
+* Sepet işlemleri
+* Sipariş oluşturma
+* Sipariş geçmişi görüntüleme
+* Profil yönetimi
+* Haftalık supplement programı oluşturma ve güncelleme
+
+Ayrıca admin kullanıcılar için ürün yönetim ekranları da planlanmıştır.
+
+---
+
+## API Test Süreci
+
+Mobil uygulamanın backend bağlantıları Postman üzerinden test edilmiştir.
+
+Test edilen başlıca işlemler:
+
+* Sistem sağlık kontrolü
+* Kullanıcı kayıt/giriş
+* Ürün listeleme
+* Profil işlemleri
+* Sepet işlemleri
+* Sipariş işlemleri
+* Haftalık program işlemleri
+* Admin ürün yönetimi
+
+Bu testler sonucunda backend bağlantılarının sağlıklı şekilde çalıştığı doğrulanmıştır.
+
+---
+
+## Navigasyon Yapısı
+
+Mobil uygulama içerisinde kullanıcı akışı aşağıdaki şekilde planlanmıştır:
+
+**Auth Bölümü:**
+
+* Login
+* Register
+
+**Ana Bölüm:**
+
+* Home
+* Products
+* Cart
+* Orders
+* Profile
+
+**Ek Ekranlar:**
+
+* Product Detail
+* Order Detail
+* Weekly Program
+* Admin Product Management
+
+Bu yapı kullanıcı deneyimini daha düzenli hale getirmektedir.
