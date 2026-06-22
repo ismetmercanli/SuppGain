@@ -1,6 +1,7 @@
 # Mobil Frontend 
 
 Mobil Frontend videosu : [Mobile Frontend Videosu](https://www.youtube.com/watch?v=4-_RawR8Kyg)
+EXPO - GO ile Frontend linki : (exp://uc696dy-anonymous-8081.exp.direct)
 
 # SuppGain Mobile Frontend Yapısı
 
