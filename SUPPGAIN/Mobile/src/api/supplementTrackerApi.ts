@@ -1,0 +1,78 @@
+import { apiClient } from './client';
+import type {
+  CreateSupplementTrackerPayload,
+  DashboardIntakeRow,
+  SupplementDashboard,
+} from '../types/supplementTracker';
+
+function parseIntakeStatus(value: unknown): DashboardIntakeRow['status'] {
+  if (value === 'completed' || value === 'due' || value === 'upcoming') return value;
+  return 'upcoming';
+}
+
+function mapDashboard(raw: Record<string, unknown>): SupplementDashboard {
+  const intakesRaw = Array.isArray(raw.intakes) ? raw.intakes : [];
+  const stockRaw = Array.isArray(raw.stockAlerts) ? raw.stockAlerts : [];
+
+  return {
+    localDate: String(raw.localDate ?? ''),
+    totalScheduledDoses: Number(raw.totalScheduledDoses ?? 0),
+    completedDoses: Number(raw.completedDoses ?? 0),
+    compliancePercent: Number(raw.compliancePercent ?? 0),
+    lastCompletedProductName:
+      raw.lastCompletedProductName == null ? null : String(raw.lastCompletedProductName),
+    lastCompletedAtUtc:
+      raw.lastCompletedAtUtc == null ? null : String(raw.lastCompletedAtUtc),
+    intakes: intakesRaw.map((item) => {
+      const row = item as Record<string, unknown>;
+      return {
+        rowId: String(row.rowId ?? ''),
+        trackerId: String(row.trackerId ?? ''),
+        slotIndex: Number(row.slotIndex ?? 0),
+        productId: String(row.productId ?? ''),
+        productName: String(row.productName ?? ''),
+        plannedTimeLocal: String(row.plannedTimeLocal ?? ''),
+        contextHint: String(row.contextHint ?? ''),
+        doseAmount: Number(row.doseAmount ?? 0),
+        isCompleted: Boolean(row.isCompleted),
+        loggedAtUtc: row.loggedAtUtc == null ? null : String(row.loggedAtUtc),
+        status: parseIntakeStatus(row.status),
+      };
+    }),
+    stockAlerts: stockRaw.map((item) => {
+      const s = item as Record<string, unknown>;
+      return {
+        trackerId: String(s.trackerId ?? ''),
+        productId: String(s.productId ?? ''),
+        productName: String(s.productName ?? ''),
+        currentStock: Number(s.currentStock ?? 0),
+        lowStockThreshold: Number(s.lowStockThreshold ?? 0),
+        severity: s.severity === 'urgent' ? 'urgent' : 'warning',
+      };
+    }),
+  };
+}
+
+export async function getSupplementDashboard(): Promise<SupplementDashboard> {
+  const response = await apiClient.get<Record<string, unknown>>(
+    '/supplement-tracker/dashboard',
+  );
+  return mapDashboard(response.data);
+}
+
+export async function consumeSupplementDose(
+  trackerId: string,
+  consumedAmount: number,
+  note = '',
+): Promise<void> {
+  await apiClient.post(`/supplement-tracker/${trackerId}/consume`, {
+    consumedAmount,
+    note,
+  });
+}
+
+export async function createSupplementTracker(
+  payload: CreateSupplementTrackerPayload,
+): Promise<void> {
+  await apiClient.post('/supplement-tracker', payload);
+}

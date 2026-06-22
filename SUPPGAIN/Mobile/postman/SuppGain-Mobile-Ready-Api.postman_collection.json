@@ -1,0 +1,250 @@
+{
+  "info": {
+    "_postman_id": "a8b6233a-6a0e-4c87-bf21-7c59550f25d1",
+    "name": "SuppGain Mobile - Ready API Tests",
+    "description": "Mobile tarafında şu an hazır olan API bağlantılarını test eder: health, register, login ve product list.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (!pm.environment.get('baseUrl')) {",
+          "  pm.environment.set('baseUrl', 'https://suppgain-production.up.railway.app');",
+          "}",
+          "",
+          "const timestamp = Date.now();",
+          "if (!pm.environment.get('testEmail')) {",
+          "  pm.environment.set('testEmail', `mobile.user.${timestamp}@suppgain.test`);",
+          "}",
+          "if (!pm.environment.get('testPassword')) {",
+          "  pm.environment.set('testPassword', '12345678');",
+          "}",
+          "if (!pm.environment.get('testFirstName')) {",
+          "  pm.environment.set('testFirstName', 'Mobile');",
+          "}",
+          "if (!pm.environment.get('testLastName')) {",
+          "  pm.environment.set('testLastName', 'Tester');",
+          "}",
+          "if (!pm.environment.get('testPhone')) {",
+          "  pm.environment.set('testPhone', '5551234567');",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Health - Backend Bağlantı Kontrolü",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200 dönmeli', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Backend status ok dönmeli', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.status).to.eql('ok');",
+              "  pm.expect(json.service).to.eql('SuppGain.Api');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. Register - Mobil Kullanıcı Kaydı",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const timestamp = Date.now();",
+              "pm.environment.set('testEmail', `mobile.user.${timestamp}@suppgain.test`);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Register 200 dönmeli', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test('Token ve user dönmeli', function () {",
+              "  pm.expect(json.token).to.be.a('string').and.not.empty;",
+              "  pm.expect(json.user).to.be.an('object');",
+              "  pm.expect(json.user.email).to.eql(pm.environment.get('testEmail'));",
+              "});",
+              "",
+              "pm.environment.set('token', json.token);",
+              "pm.environment.set('userId', json.user.id);",
+              "pm.environment.set('registeredEmail', json.user.email);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"{{testFirstName}}\",\n  \"lastName\": \"{{testLastName}}\",\n  \"email\": \"{{testEmail}}\",\n  \"password\": \"{{testPassword}}\",\n  \"phone\": \"{{testPhone}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Login - Mobil Kullanıcı Girişi",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const registeredEmail = pm.environment.get('registeredEmail');",
+              "if (registeredEmail) {",
+              "  pm.environment.set('loginEmail', registeredEmail);",
+              "} else if (!pm.environment.get('loginEmail')) {",
+              "  pm.environment.set('loginEmail', pm.environment.get('testEmail'));",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Login 200 dönmeli', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test('Login token dönmeli', function () {",
+              "  pm.expect(json.token).to.be.a('string').and.not.empty;",
+              "  pm.expect(json.user).to.be.an('object');",
+              "});",
+              "",
+              "pm.environment.set('token', json.token);",
+              "pm.environment.set('userId', json.user.id);",
+              "pm.environment.set('loginEmail', json.user.email);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{loginEmail}}\",\n  \"password\": \"{{testPassword}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Products - Ürün Listeleme",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Products 200 dönmeli', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test('Ürün listesi array olmalı', function () {",
+              "  pm.expect(json).to.be.an('array');",
+              "});",
+              "",
+              "if (Array.isArray(json) && json.length > 0) {",
+              "  pm.environment.set('productId', json[0].id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/products?isActive=true",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "isActive",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": []
+}

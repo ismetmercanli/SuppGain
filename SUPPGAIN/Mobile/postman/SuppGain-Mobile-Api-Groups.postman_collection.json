@@ -1,0 +1,1247 @@
+{
+  "info": {
+    "_postman_id": "7cf8b46a-f4c6-4d6d-9852-3cc4c6b53b4c",
+    "name": "SuppGain Mobile - API Groups",
+    "description": "Mobil için şu ana kadar bağlanan API URL'leri: 1) Temel Bağlantı Grubu, 2) Auth Grubu.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (!pm.environment.get('baseUrl')) {",
+          "  pm.environment.set('baseUrl', 'https://suppgain-production.up.railway.app');",
+          "}",
+          "",
+          "if (!pm.environment.get('testPassword')) {",
+          "  pm.environment.set('testPassword', '12345678');",
+          "}",
+          "if (!pm.environment.get('testFirstName')) {",
+          "  pm.environment.set('testFirstName', 'Mobile');",
+          "}",
+          "if (!pm.environment.get('testLastName')) {",
+          "  pm.environment.set('testLastName', 'Tester');",
+          "}",
+          "if (!pm.environment.get('testPhone')) {",
+          "  pm.environment.set('testPhone', '5551234567');",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Temel Bağlantı Grubu",
+      "item": [
+        {
+          "name": "1.1 GET /health",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Health status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Backend ayakta', function () {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.status).to.eql('ok');",
+                  "  pm.expect(json.service).to.eql('SuppGain.Api');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.2 GET /products?isActive=true",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Products status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Ürün listesi array dönmeli', function () {",
+                  "  pm.expect(json).to.be.an('array');",
+                  "});",
+                  "",
+                  "if (Array.isArray(json) && json.length > 0) {",
+                  "  pm.environment.set('productId', json[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?isActive=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "isActive",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Auth Grubu",
+      "item": [
+        {
+          "name": "2.1 POST /auth/register",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const timestamp = Date.now();",
+                  "pm.environment.set('testEmail', `mobile.user.${timestamp}@suppgain.test`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Register status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Register token ve user dönmeli', function () {",
+                  "  pm.expect(json.token).to.be.a('string').and.not.empty;",
+                  "  pm.expect(json.user).to.be.an('object');",
+                  "  pm.expect(json.user.email).to.eql(pm.environment.get('testEmail'));",
+                  "});",
+                  "",
+                  "pm.environment.set('token', json.token);",
+                  "pm.environment.set('userId', json.user.id);",
+                  "pm.environment.set('registeredEmail', json.user.email);",
+                  "pm.environment.set('loginEmail', json.user.email);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"{{testFirstName}}\",\n  \"lastName\": \"{{testLastName}}\",\n  \"email\": \"{{testEmail}}\",\n  \"password\": \"{{testPassword}}\",\n  \"phone\": \"{{testPhone}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.2 POST /auth/login",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('loginEmail')) {",
+                  "  pm.environment.set('loginEmail', pm.environment.get('registeredEmail') || pm.environment.get('testEmail'));",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Login token ve user dönmeli', function () {",
+                  "  pm.expect(json.token).to.be.a('string').and.not.empty;",
+                  "  pm.expect(json.user).to.be.an('object');",
+                  "});",
+                  "",
+                  "pm.environment.set('token', json.token);",
+                  "pm.environment.set('userId', json.user.id);",
+                  "pm.environment.set('loginEmail', json.user.email);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{loginEmail}}\",\n  \"password\": \"{{testPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Profil Grubu",
+      "item": [
+        {
+          "name": "3.1 GET /users/me",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Profile status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Profil user bilgisi dönmeli', function () {",
+                  "  pm.expect(json.id).to.be.a('string').and.not.empty;",
+                  "  pm.expect(json.email).to.be.a('string').and.not.empty;",
+                  "});",
+                  "",
+                  "pm.environment.set('userId', json.id);",
+                  "pm.environment.set('profileEmail', json.email);",
+                  "pm.environment.set('profileFirstName', json.firstName);",
+                  "pm.environment.set('profileLastName', json.lastName);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3.2 PUT /users/me",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const email = pm.environment.get('profileEmail') || pm.environment.get('loginEmail') || pm.environment.get('registeredEmail');",
+                  "pm.environment.set('profileUpdateEmail', email);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Profile update status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Profil güncellenmiş dönmeli', function () {",
+                  "  pm.expect(json.firstName).to.eql('MobileUpdated');",
+                  "  pm.expect(json.lastName).to.eql('TesterUpdated');",
+                  "  pm.expect(json.email).to.eql(pm.environment.get('profileUpdateEmail'));",
+                  "});",
+                  "",
+                  "pm.environment.set('profileFirstName', json.firstName);",
+                  "pm.environment.set('profileLastName', json.lastName);",
+                  "pm.environment.set('profileEmail', json.email);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"MobileUpdated\",\n  \"lastName\": \"TesterUpdated\",\n  \"email\": \"{{profileUpdateEmail}}\",\n  \"phone\": \"5559876543\",\n  \"age\": 24,\n  \"gender\": \"Male\",\n  \"heightCm\": 180,\n  \"weightKg\": 78\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Sepet Grubu",
+      "item": [
+        {
+          "name": "4.1 POST /cart",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('productId')) {",
+                  "  throw new Error('productId bulunamadı. Önce 1.2 GET /products?isActive=true isteğini çalıştır.');",
+                  "}",
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Add to cart status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Sepet bilgisi dönmeli', function () {",
+                  "  pm.expect(json.cartId).to.be.a('string').and.not.empty;",
+                  "  pm.expect(json.items).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.environment.set('cartId', json.cartId);",
+                  "if (Array.isArray(json.items) && json.items.length > 0) {",
+                  "  pm.environment.set('cartProductId', json.items[0].productId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{productId}}\",\n  \"quantity\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4.2 GET /cart",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Get cart status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Sepet listesi dönmeli', function () {",
+                  "  pm.expect(json.cartId).to.be.a('string').and.not.empty;",
+                  "  pm.expect(json.items).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.environment.set('cartId', json.cartId);",
+                  "pm.environment.set('cartTotalAmount', json.totalAmount);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. Sipariş Grubu",
+      "item": [
+        {
+          "name": "5.1 POST /orders",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Create order status 201 veya 200', function () {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Sipariş bilgisi dönmeli', function () {",
+                  "  pm.expect(json.orderId).to.be.a('string').and.not.empty;",
+                  "  pm.expect(json.items).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.environment.set('orderId', json.orderId);",
+                  "pm.environment.set('orderTotalAmount', json.totalAmount);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5.2 GET /orders/me",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Get my orders status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Sipariş listesi array dönmeli', function () {",
+                  "  pm.expect(json).to.be.an('array');",
+                  "});",
+                  "",
+                  "if (Array.isArray(json) && json.length > 0 && !pm.environment.get('orderId')) {",
+                  "  pm.environment.set('orderId', json[0].orderId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/orders/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5.3 GET /orders/{orderId}",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}",
+                  "if (!pm.environment.get('orderId')) {",
+                  "  throw new Error('orderId bulunamadı. Önce 5.1 POST /orders veya 5.2 GET /orders/me isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Get order detail status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Sipariş detayı dönmeli', function () {",
+                  "  pm.expect(json.orderId).to.eql(pm.environment.get('orderId'));",
+                  "  pm.expect(json.items).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                "{{orderId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "6. Haftalık Program Grubu",
+      "item": [
+        {
+          "name": "6.1 GET /weekly-program/me",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Get weekly programs status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Haftalık program listesi array dönmeli', function () {",
+                  "  pm.expect(json).to.be.an('array');",
+                  "});",
+                  "",
+                  "if (Array.isArray(json) && json.length > 0 && !pm.environment.get('programId')) {",
+                  "  pm.environment.set('programId', json[0].programId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/weekly-program/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "weekly-program",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "6.2 POST /weekly-program",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Create weekly program status 201 veya 200', function () {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Haftalık program bilgisi dönmeli', function () {",
+                  "  pm.expect(json.programId).to.be.a('string').and.not.empty;",
+                  "  pm.expect(json.title).to.be.a('string').and.not.empty;",
+                  "});",
+                  "",
+                  "pm.environment.set('programId', json.programId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Mobil Haftalık Program\",\n  \"contentJson\": \"{\\\"days\\\":[{\\\"day\\\":\\\"Monday\\\",\\\"slot\\\":\\\"Morning\\\",\\\"note\\\":\\\"Protein kullanımı\\\"}]}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/weekly-program",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "weekly-program"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "6.3 PUT /weekly-program/{programId}",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}",
+                  "if (!pm.environment.get('programId')) {",
+                  "  throw new Error('programId bulunamadı. Önce 6.2 POST /weekly-program isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Update weekly program status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Haftalık program güncellenmiş dönmeli', function () {",
+                  "  pm.expect(json.programId).to.eql(pm.environment.get('programId'));",
+                  "  pm.expect(json.title).to.eql('Mobil Haftalık Program Güncel');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Mobil Haftalık Program Güncel\",\n  \"contentJson\": \"{\\\"days\\\":[{\\\"day\\\":\\\"Tuesday\\\",\\\"slot\\\":\\\"Evening\\\",\\\"note\\\":\\\"Güncellenmiş kullanım\\\"}]}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/weekly-program/{{programId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "weekly-program",
+                "{{programId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "6.4 POST /weekly-program/auto-from-purchases",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Auto weekly program status 201/200 veya uygun hata', function () {",
+                  "  pm.expect([200, 201, 400]).to.include(pm.response.code);",
+                  "});",
+                  "",
+                  "if (pm.response.code !== 400) {",
+                  "  const json = pm.response.json();",
+                  "  pm.environment.set('autoProgramId', json.programId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Satın Alınanlardan Mobil Program\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/weekly-program/auto-from-purchases",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "weekly-program",
+                "auto-from-purchases"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "7. Admin Ürün Yönetimi Grubu",
+      "item": [
+        {
+          "name": "7.1 POST /auth/login - Admin",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('adminEmail')) {",
+                  "  pm.environment.set('adminEmail', 'mercanliismet@gmail.com');",
+                  "}",
+                  "if (!pm.environment.get('adminPassword')) {",
+                  "  pm.environment.set('adminPassword', '12345678');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Admin login status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Admin token dönmeli', function () {",
+                  "  pm.expect(json.token).to.be.a('string').and.not.empty;",
+                  "  pm.expect(json.user.email).to.eql(pm.environment.get('adminEmail'));",
+                  "});",
+                  "",
+                  "pm.environment.set('adminToken', json.token);",
+                  "pm.environment.set('adminUserId', json.user.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "7.2 POST /products - Admin Ürün Ekle",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('adminToken')) {",
+                  "  throw new Error('adminToken bulunamadı. Önce 7.1 POST /auth/login - Admin isteğini çalıştır.');",
+                  "}",
+                  "pm.environment.set('adminProductName', `Mobil Admin Test Ürün ${Date.now()}`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Create product status 201 veya 200', function () {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Ürün oluşturulmuş dönmeli', function () {",
+                  "  pm.expect(json.id).to.be.a('string').and.not.empty;",
+                  "  pm.expect(json.name).to.eql(pm.environment.get('adminProductName'));",
+                  "});",
+                  "",
+                  "pm.environment.set('adminProductId', json.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{adminProductName}}\",\n  \"description\": \"Mobil admin API testi için oluşturuldu.\",\n  \"imageUrl\": null,\n  \"price\": 499.90,\n  \"stock\": 25,\n  \"category\": \"MobileTest\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "7.3 PUT /products/{productId} - Admin Ürün Güncelle",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('adminToken')) {",
+                  "  throw new Error('adminToken bulunamadı. Önce 7.1 POST /auth/login - Admin isteğini çalıştır.');",
+                  "}",
+                  "if (!pm.environment.get('adminProductId')) {",
+                  "  throw new Error('adminProductId bulunamadı. Önce 7.2 POST /products isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Update product status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test('Ürün güncellenmiş dönmeli', function () {",
+                  "  pm.expect(json.id).to.eql(pm.environment.get('adminProductId'));",
+                  "  pm.expect(json.name).to.eql(`${pm.environment.get('adminProductName')} Güncel`);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{adminProductName}} Güncel\",\n  \"description\": \"Mobil admin API testi için güncellendi.\",\n  \"imageUrl\": null,\n  \"price\": 599.90,\n  \"stock\": 30,\n  \"category\": \"MobileTest\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{adminProductId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{adminProductId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "7.4 DELETE /products/{productId} - Admin Ürün Sil",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('adminToken')) {",
+                  "  throw new Error('adminToken bulunamadı. Önce 7.1 POST /auth/login - Admin isteğini çalıştır.');",
+                  "}",
+                  "if (!pm.environment.get('adminProductId')) {",
+                  "  throw new Error('adminProductId bulunamadı. Önce 7.2 POST /products isteğini çalıştır.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Delete product status 204', function () {",
+                  "  pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{adminProductId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{adminProductId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "8. Kapanış / Hesap Silme Grubu",
+      "item": [
+        {
+          "name": "8.1 DELETE /users/me",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('token')) {",
+                  "  throw new Error('token bulunamadı. Önce 2.2 POST /auth/login isteğini çalıştır.');",
+                  "}",
+                  "",
+                  "// Bu istek test kullanıcısını siler. Collection'da en son çalıştırılmalıdır."
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Delete my account status 204', function () {",
+                  "  pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.environment.unset('token');",
+                  "pm.environment.unset('userId');",
+                  "pm.environment.unset('registeredEmail');",
+                  "pm.environment.unset('loginEmail');",
+                  "pm.environment.unset('profileEmail');",
+                  "pm.environment.unset('cartId');",
+                  "pm.environment.unset('orderId');",
+                  "pm.environment.unset('programId');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": []
+}
