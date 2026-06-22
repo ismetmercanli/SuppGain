@@ -1,10 +1,8 @@
-# Mobil Frontend Görev Dağılımı
-
-Bu dokümanda, mobil uygulamanın kullanıcı arayüzü (UI) ve kullanıcı deneyimi (UX) görevleri listelenmektedir. Her grup üyesi, kendisine atanan ekranların tasarımı, implementasyonu ve kullanıcı etkileşimlerinden sorumludur.
-
-
-
+# Mobil Frontend 
 ---
+
+Mobil Frontend videosu : [Mobile Frontend Videosu](https://www.youtube.com/watch?v=4-_RawR8Kyg)
+
 # SuppGain Mobile Frontend Yapısı
 
 ## Frontend Yapısı
