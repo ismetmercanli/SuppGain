@@ -1,6 +1,6 @@
 # Mobil Backend (REST API Bağlantısı)
 
-**REST API Adresi:** [api.yazmuh.com](https://api.yazmuh.com)
+**REST API Adresi:** [api.yazmuh.com](https://suppgain-production.up.railway.app/swagger/index.html)
 
 
 ## Backend Entegrasyonu
