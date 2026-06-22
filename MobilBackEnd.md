@@ -1,7 +1,7 @@
 # Mobil Backend (REST API Bağlantısı)
 
 **REST API Adresi:** [api.suppgain.com](https://suppgain-production.up.railway.app/swagger/index.html)
-
+**BACKEND VİDEOSU** [Backend VİDEO](https://www.youtube.com/watch?v=WX2btrcFKis)
 
 ## Backend Entegrasyonu
 
