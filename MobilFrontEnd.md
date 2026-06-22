@@ -1,5 +1,4 @@
 # Mobil Frontend 
----
 
 Mobil Frontend videosu : [Mobile Frontend Videosu](https://www.youtube.com/watch?v=4-_RawR8Kyg)
 
