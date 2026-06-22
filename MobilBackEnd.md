@@ -2,11 +2,6 @@
 
 **REST API Adresi:** [api.yazmuh.com](https://api.yazmuh.com)
 
-## Grup Üyelerinin Mobil Backend Görevleri
-
-1. [Ali Tutar'ın Mobil Backend Görevleri](Ali-Tutar/Ali-Tutar-Mobil-Backend-Gorevleri.md)
-
----
 
 ## Backend Entegrasyonu
 
