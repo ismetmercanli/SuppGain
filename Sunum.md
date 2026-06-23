@@ -1,5 +1,4 @@
-# Video Sunum
-
+## Sunum Videosu
 ## CI-CD ve Docker Kanıt Videosu
 
 > **Video Linki:** [CI-CD ve Docker](https://www.youtube.com/watch?v=GbBYWXD4Ih0)
@@ -13,6 +12,8 @@
 > **Video Linki:** [Redis](https://www.youtube.com/watch?v=EwRtscAaQKU)
 
 ## Sunum Videosu 
+
+> **Video Linki:** [Sunum](https://youtube.com/shorts/aFhoRfNOQXs)
 
 
 
