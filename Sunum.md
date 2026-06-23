@@ -13,7 +13,7 @@
 
 ## Sunum Videosu 
 
-> **Video Linki:** [Sunum](https://youtube.com/shorts/aFhoRfNOQXs)
+> **Video Linki:** [Sunum Videosu](https://www.youtube.com/watch?v=m9DFKLxufcg)
 
 
 
